@@ -3,6 +3,12 @@
         "name": "jose",
         "phone": "1",
         "email": "1",
+        "isFavorite": true
+    },
+    {
+        "name": "nacho",
+        "phone": "1",
+        "email": "1",
         "isFavorite": false
     }
 ]

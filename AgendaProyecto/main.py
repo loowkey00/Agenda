@@ -23,7 +23,10 @@ def main():
         print("2- Busca un contacto")
         print("3- Eliminar contacto")
         print("4- Ver todos los contactos")
-        print("5- Salir")
+        print("5- Agregar a favoritos")
+        print("6- Quitar de favoritos")
+        print("7- Ver todos los contactos favoritos")
+        print("8- Salir")
 
         option = input("Seleccione una opción: ").strip()
 
@@ -44,6 +47,18 @@ def main():
             print("\nVer todos los contactos")
             seeAllContacts(contact_list)
         elif option == "5":
+            # Agregar contacto a favoritos
+            print("\nAgregar contacto a favoritos")
+            addFavorite(contact_list)
+        elif option == "6":
+            # Quitar contacto a favoritos
+            print("\nQuitar contacto de favoritos")
+            removeFavorite(contact_list)
+        elif option == "7":
+            # Ver todos los contactos favoritos
+            print("\nVer todos los contactos favoritos")
+            seeAllFavoriteContacts(contact_list)
+        elif option == "8":
             # Salir
             print("\nSalir")
             break
@@ -124,6 +139,67 @@ def seeAllContacts(contact_list):
                 print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")} - FAVORITO")      
             else:
                 print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")}")   
+
+def addFavorite(contact_list):
+    for i, c in enumerate(contact_list):
+        if i == 0:
+            print(f"\n{i}- {c.get("name")}")
+        else:
+            print(f"{i}- {c.get("name")}")
+
+    option = input("Seleccione una opción: ").strip()    
+
+    for i, c in enumerate(contact_list):
+        if str(i) == option:
+            contact_list[i] = { "name": c["name"], "phone": c["phone"], "email": c["email"], "isFavorite": True }
+            savePlanner(contact_list)
+            print(f"\nContacto {c.get("name")} agregado a favoritos")
+            return
+    
+    print(f"\nContacto no encontrado")
+
+def removeFavorite(contact_list):
+    favorites = []
+    for i, c in enumerate(contact_list):
+        if c.get("isFavorite") == True:
+            favorites.append(c)
+
+    if not favorites:
+        print("\nNo hay favoritos")
+        return
+
+    for i, c in enumerate(contact_list):
+        if c.get("isFavorite") == True:
+            if i == 0:
+                print(f"\n{i}- {c.get("name")}")
+            else:
+                print(f"{i}- {c.get("name")}")
+
+    option = input("Seleccione una opción: ").strip()    
+
+    for i, c in enumerate(contact_list):
+        if c.get("isFavorite") == True:
+            if str(i) == option:
+                contact_list[i] = { "name": c["name"], "phone": c["phone"], "email": c["email"], "isFavorite": False }
+                savePlanner(contact_list)
+                print(f"\nContacto {c.get("name")} quitado a favoritos")
+                return
+    
+    print(f"\nContacto no encontrado")
+
+def seeAllFavoriteContacts(contact_list):
+    favorites = []
+    for i, c in enumerate(contact_list):
+        if c.get("isFavorite") == True:
+            favorites.append(c)
+
+    if not favorites:
+        print("\nNo hay favoritos")
+        return
+    
+    for contact in contact_list:
+        if contact.get("isFavorite") == True:
+            print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")} - FAVORITO")          
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ Esta agenda permite:
 -Buscar contactos
 -Ver todos los contactos
 -Eliminar un contacto
+-Agregar a favoritos
 
 Integrantes del proyecto:
 Nelson Valencia
@@ -18,4 +19,4 @@ git add .
 git commit -m "first commit"
 git remote add origin <url-del-repo>
 git push -u origin main
-
+python main.py
