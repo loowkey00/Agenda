@@ -45,16 +45,30 @@ def addContact(contact_list):
             print("\nEl nombre del contacto esta en uso!")
             return
             
-    contact_list.append({"name": name, "phone": phone, "email": email})
+    contact_list.append({"name": name, "phone": phone, "email": email, "isFavorite": False})
     print(f"\nContacto {name} agregado")
 
 def removeContact(contact_list):
-    name = input("\nIngresa un nombre: ").strip()
+    for i, c in enumerate(contact_list):
+        if i == 0:
+            print(f"\n{i}- {c['name']}")
+        else:
+            print(f"{i}- {c['name']}")
+
+    option = input("Seleccione una opción: ").strip()
+
+    for i, c in enumerate(contact_list):
+        if str(i) == option:
+            contact_list.remove(c)
+            print(f"\nContacto {c['name']} eliminado")
+            return
+
+    """name = input("\nIngresa un nombre: ").strip()
     for contact in contact_list:
         if contact["name"] == name:
             contact_list.remove(contact)
             print(f"\nContacto {name} eliminado")
-            return
+            return """
     
     print(f"\nContacto no encontrado")
 
@@ -69,14 +83,21 @@ def searchContact(contact_list):
         print("No hay resultados")
     else:
         for contact in search:
-            print(f"{contact['name']}: {contact['phone']} - {contact['email']}")        
+            if contact["isFavorite"] == True:
+                print(f"{contact['name']}: {contact['phone']} - {contact['email']} - FAVORITO")      
+            else:
+                print(f"{contact['name']}: {contact['phone']} - {contact['email']}")   
+
 
 def seeAllContacts(contact_list):
     if not contact_list:
         print("\nLa agenda está vacía")
     else:
         for contact in contact_list:
-            print(f"{contact['name']}: {contact['phone']} - {contact['email']}")
+            if contact["isFavorite"] == True:
+                print(f"{contact['name']}: {contact['phone']} - {contact['email']} - FAVORITO")      
+            else:
+                print(f"{contact['name']}: {contact['phone']} - {contact['email']}")   
 
 if __name__ == "__main__":
     main()
