@@ -1,10 +1,11 @@
 # Agenda
-Descripcion:Agenda que permite 
+
+Descripcion:
+Esta agenda permite:
 -Agregar contactos
 -Buscar contactos
 -Ver todos los contactos
 -Eliminar un contacto
-
 
 Integrantes del proyecto
 Nelson Valencia
@@ -17,3 +18,4 @@ git add .
 git commit -m "first commit"
 git remote add origin <url-del-repo>
 git push -u origin main
+python main.py
