@@ -1,6 +1,21 @@
+import json
+
+AGENDA_FILE = "agenda.json"
+
+def loadPlanner():
+    try:
+        with open(AGENDA_FILE, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return [{}]
+
+def savePlanner(agenda):
+    with open(AGENDA_FILE, "w") as f:
+        json.dump(agenda, f, indent=4)
+
 # Definir función para el loop principal
 def main():
-    contact_list = [] # Definir lista/array de contactos
+    contact_list = loadPlanner() # Definir lista/array de contactos
     while True:
         print("\nAGENDA DE CONTACTOS")
         
@@ -40,27 +55,38 @@ def addContact(contact_list):
     phone = input("Ingrea un número de celular: ").strip()
     email = input("Ingresa un correo electronico: ").strip()
 
-    for contact in contact_list:
-        if contact["name"] == name:
+    if len(contact_list) > 0:
+        for contact in contact_list:
+            if contact.get("name").lower() == name.lower():
+                print("\nEl nombre del contacto esta en uso!")
+                return
+
+    contact_list.append({"name": name, "phone": phone, "email": email, "isFavorite": False})
+    savePlanner(contact_list)
+    print(f"\nContacto {name} agregado")
+
+    """for contact in contact_list:
+        if contact[name] == name:
             print("\nEl nombre del contacto esta en uso!")
             return
             
-    contact_list.append({"name": name, "phone": phone, "email": email, "isFavorite": False})
-    print(f"\nContacto {name} agregado")
+    contact_list.append({"name": name, "phone": phone, "email": email, "isFavorite": False})"""
+    
 
 def removeContact(contact_list):
     for i, c in enumerate(contact_list):
         if i == 0:
-            print(f"\n{i}- {c['name']}")
+            print(f"\n{i}- {c.get("name")}")
         else:
-            print(f"{i}- {c['name']}")
+            print(f"{i}- {c.get("name")}")
 
     option = input("Seleccione una opción: ").strip()
 
     for i, c in enumerate(contact_list):
         if str(i) == option:
             contact_list.remove(c)
-            print(f"\nContacto {c['name']} eliminado")
+            savePlanner(contact_list)
+            print(f"\nContacto {c.get("name")} eliminado")
             return
 
     """name = input("\nIngresa un nombre: ").strip()
@@ -76,17 +102,17 @@ def searchContact(contact_list):
     name = input("\nIngresa un nombre: ").strip()
     search = []
     for contact in contact_list:
-        if contact["name"].startswith(name): 
+        if contact.get("name").startswith(name): 
             search.append(contact)
 
     if not search:
         print("No hay resultados")
     else:
         for contact in search:
-            if contact["isFavorite"] == True:
-                print(f"{contact['name']}: {contact['phone']} - {contact['email']} - FAVORITO")      
+            if contact.get("isFavorite") == True:
+                print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")} - FAVORITO")      
             else:
-                print(f"{contact['name']}: {contact['phone']} - {contact['email']}")   
+                print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")}")   
 
 
 def seeAllContacts(contact_list):
@@ -94,10 +120,10 @@ def seeAllContacts(contact_list):
         print("\nLa agenda está vacía")
     else:
         for contact in contact_list:
-            if contact["isFavorite"] == True:
-                print(f"{contact['name']}: {contact['phone']} - {contact['email']} - FAVORITO")      
+            if contact.get("isFavorite") == True:
+                print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")} - FAVORITO")      
             else:
-                print(f"{contact['name']}: {contact['phone']} - {contact['email']}")   
+                print(f"{contact.get("name")}: {contact.get("phone")} - {contact.get("email")}")   
 
 if __name__ == "__main__":
     main()
